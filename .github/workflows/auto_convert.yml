@@ -1,6 +1,8 @@
 name: JMA amedas 1h Data Convert to UTF-8
 
-on: [schedule, workflow_dispatch]
+on:
+  schedule:
+    - cron: '12 * * * *'
 
 jobs:
   build:
