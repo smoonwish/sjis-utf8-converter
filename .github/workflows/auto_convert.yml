@@ -1,4 +1,4 @@
-name: JMA Data Convert to UTF-8
+name: JMA amedas 1h Data Convert to UTF-8
 
 on: [schedule, workflow_dispatch]
 
@@ -18,7 +18,7 @@ jobs:
         python-version: '3.10'
 
     - name: run code
-      run: python convert.py
+      run: python convert_1h.py
 
     - name: save file
       run: |
