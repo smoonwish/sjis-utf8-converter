@@ -1,34 +1,28 @@
-yaml
 name: JMA Data Convert to UTF-8
 
-on:
-  schedule:
-    # 1時間に1回、毎時15分に自動実行（気象庁のデータ更新タイミングに合わせる）
-    - cron: '15 * * * *'
-  workflow_dispatch: # 手動でいつでも動かせるようにするボタン
+on: [schedule, workflow_dispatch]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # GitHubにファイルを書き込む権限
+      contents: write
 
     steps:
-    - name: レポジトリをチェックアウト
+    - name: checkout repo
       uses: actions/checkout@v4
 
-    - name: Pythonのセットアップ
+    - name: setup python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    - name: 変換プログラムの実行
+    - name: run code
       run: python convert.py
 
-    - name: 変換したCSVをGitHubに上書き保存
+    - name: save file
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add jma_latest_utf8.csv
-        git diff-index --quiet HEAD || git commit -m "Update JMA latest data (UTF-8)"
-        git push
+        git diff-index --quiet HEAD || (git commit -m "Update JMA data" && git push)
